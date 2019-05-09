@@ -14,6 +14,7 @@ class MainCharacter(Unit):
         self.name = name
         self.damage = 1
         self.health = 6
+        self.move_speed = 10
         self.armor = 0
         self.weapon = "fists"
         self.x_cor = 0
@@ -29,24 +30,25 @@ class MainCharacter(Unit):
         pass
 
     def move(self):
+        diag_diff = round(self.move_speed - ((self.move_speed ** 2) / 2) ** .5)
         if not (self.downward and self.upward):
             if self.upward:
-                self.y_cor += 10
+                self.y_cor += self.move_speed
                 if self.rightward | self.leftward:
-                    self.y_cor -= 3
+                    self.y_cor -= diag_diff
             if self.downward:
-                self.y_cor -= 10
+                self.y_cor -= self.move_speed
                 if self.rightward | self.leftward:
-                    self.y_cor += 3
+                    self.y_cor += diag_diff
         if not (self.rightward and self.leftward):
             if self.rightward:
-                self.x_cor += 10
+                self.x_cor += self.move_speed
                 if self.upward | self.downward:
-                    self.x_cor -= 3
+                    self.x_cor -= diag_diff
             if self.leftward:
-                self.x_cor -= 10
+                self.x_cor -= self.move_speed
                 if self.upward | self.downward:
-                    self.x_cor += 3
+                    self.x_cor += diag_diff
 
 
 # here we will use factory method to create Enemies, because we

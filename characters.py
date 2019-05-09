@@ -1,5 +1,5 @@
-from singleton import singleton
 from abc import abstractmethod
+from singleton import singleton
 
 
 class Unit:

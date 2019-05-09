@@ -14,7 +14,7 @@ jobs:
       script: PYTHONPATH=. pytest tests
     - stage: build_wheel
       name: "Build Wheel"
-      script: python setup.py bdist_wheel
+      script: python3 setup.py bdist_wheel
       deploy:
         provider: releases
         skip_cleanup: true

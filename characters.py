@@ -1,7 +1,9 @@
 from singleton import singleton
+from abc import abstractmethod
 
 
 class Unit:
+    @abstractmethod
     def move(self):
         pass
 
@@ -51,11 +53,15 @@ class MainCharacter(Unit):
                     self.x_cor += diag_diff
 
 
-# here we will use factory method to create Enemies, because we
-# may want to expand Enemies types
 class Enemies(Unit):
+    """
+    Enemies are created using factory method, because we want to expand types
+    """
+
+    @abstractmethod
     def move(self):
         pass
 
+    @abstractmethod
     def attack(self):
         pass

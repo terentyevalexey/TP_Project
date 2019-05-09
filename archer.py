@@ -7,5 +7,3 @@ class Archer(Enemies):
 
     def attack(self):
         """attack ranged"""
-
-

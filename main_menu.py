@@ -7,8 +7,8 @@ def enable_continue():
 
 
 try:
-    f = open("character.txt", "x")
-    f.close()
+    F = open("character.txt", "x")
+    F.close()
 except FileExistsError:
     enable_continue()
 

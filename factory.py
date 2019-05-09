@@ -1,13 +1,13 @@
 from characters import Enemies
-from Bee import Bee
-from Archer import Archer
-from Spider import Spider
-from Scorpion import Scorpion
-from Zombie import Zombie
+from bee import Bee
+from archer import Archer
+from spider import Spider
+from scorpion import Scorpion
+from zombie import Zombie
 
 
 class EnemyFactory:
-    def create(self, x_cor=0, y_cor=0):
+    def create(self, x_cor=0, y_cor=0):  # pylint: disable=no-self-use
         obj = Enemies()
         obj.race = "Enemy"
         obj.x_cor = x_cor
@@ -21,7 +21,7 @@ class SpiderFactory(EnemyFactory):
         obj.__dict__ = super().create(x_cor, y_cor).__dict__
         obj.name = "Spider"
         obj.health = 5
-        obj._damage = 2
+        obj.damage = 2
         return obj
 
 
@@ -31,7 +31,7 @@ class ZombieFactory(EnemyFactory):
         obj.__dict__ = super().create(x_cor, y_cor).__dict__
         obj.name = "Zombie"
         obj.health = 3
-        obj._damage = 2
+        obj.damage = 2
         return obj
 
 
@@ -41,7 +41,7 @@ class ArcherFactory(EnemyFactory):
         obj.__dict__ = super().create(x_cor, y_cor).__dict__
         obj.name = "Archer"
         obj.health = 2
-        obj._damage = 3
+        obj.damage = 3
         return obj
 
 
@@ -51,7 +51,7 @@ class BeeFactory(EnemyFactory):
         obj.__dict__ = super().create(x_cor, y_cor).__dict__
         obj.name = "Bee"
         obj.health = 1
-        obj._damage = 1
+        obj.damage = 1
         return obj
 
 
@@ -61,5 +61,5 @@ class ScorpionFactory(EnemyFactory):
         obj.__dict__ = super().create(x_cor, y_cor).__dict__
         obj.name = "Scorpion"
         obj.health = 4
-        obj._damage = 1
+        obj.damage = 1
         return obj

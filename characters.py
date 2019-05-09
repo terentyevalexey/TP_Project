@@ -18,10 +18,10 @@ class MainCharacter(Unit):
         self.weapon = "fists"
         self.x_cor = 0
         self.y_cor = 0
-        self.right = False
-        self.down = False
-        self.left = False
-        self.up = False
+        self.rightward = False
+        self.downward = False
+        self.leftward = False
+        self.upward = False
 
     def attack(self, enemies):
         # weapon fists/sword then we check for enemies in front
@@ -29,23 +29,23 @@ class MainCharacter(Unit):
         pass
 
     def move(self):
-        if not (self.down & self.up):
-            if self.up:
+        if not (self.downward and self.upward):
+            if self.upward:
                 self.y_cor += 10
-                if self.right | self.left:
+                if self.rightward | self.leftward:
                     self.y_cor -= 3
-            if self.down:
+            if self.downward:
                 self.y_cor -= 10
-                if self.right | self.left:
+                if self.rightward | self.leftward:
                     self.y_cor += 3
-        if not (self.right & self.left):
-            if self.right:
+        if not (self.rightward and self.leftward):
+            if self.rightward:
                 self.x_cor += 10
-                if self.up | self.down:
+                if self.upward | self.downward:
                     self.x_cor -= 3
-            if self.left:
+            if self.leftward:
                 self.x_cor -= 10
-                if self.up | self.down:
+                if self.upward | self.downward:
                     self.x_cor += 3
 
 

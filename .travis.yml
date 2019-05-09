@@ -8,7 +8,7 @@ jobs:
       name: "lint"
       script:
         - python3 -m flake8 *.py
-        - python3 -m pylint --disable=C0111,R0903,R0902,R0205 *.py
+        - python3 -m pylint --disable=C0111,R0903,R0902,R0205 *.py --extension-pkg-whitelist=pygame
     - stage: test
       name: "tests"
       script: PYTHONPATH=. pytest tests

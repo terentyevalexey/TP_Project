@@ -4,8 +4,8 @@ ROOT_PACKAGE_NAME = 'Dungeon'
 
 
 def parse_requirements():
-    with open('requirements.txt') as f:
-        return f.read().splitlines()
+    with open('requirements.txt') as file:
+        return file.read().splitlines()
 
 
 setup(

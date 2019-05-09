@@ -1,4 +1,4 @@
-# Стратегия rogue-like
+# Стратегия rogue-like [![Build Status](https://travis-ci.com/terentyevalexey/TP_Project.svg?branch=master)](https://travis-ci.com/terentyevalexey/TP_Project)
 Предположительно, игра будет чем-то похожей на The Binding of Isaac, 
 но так как делать такое долго, то она будет обрубком (предположительно нелохим).
 

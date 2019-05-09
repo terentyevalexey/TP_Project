@@ -1,0 +1,5 @@
+# Pycharm staff
+.idea/
+
+# Virtual environment
+.venv/

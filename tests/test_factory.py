@@ -1,6 +1,7 @@
 import unittest
 from factory import *
 
+
 class TestFactory(unittest.TestCase):
     def test_spider(self):
         spider = SpiderFactory().create()
@@ -8,8 +9,10 @@ class TestFactory(unittest.TestCase):
         self.assertEqual(spider.name, "Spider")
         self.assertEqual(spider.health, 5)
         self.assertEqual(spider._damage, 2)
-        self.assertEqual(spider.move.__doc__, "move left or right to meet character or turn")
-        self.assertEqual(spider.attack.__doc__, "shoot the player's direction slows enemy")
+        self.assertEqual(spider.move.__doc__,
+                         "move left or right to meet character or turn")
+        self.assertEqual(spider.attack.__doc__,
+                         "shoot the player's direction slows enemy")
 
     def test_archer(self):
         archer = ArcherFactory().create()
@@ -26,8 +29,10 @@ class TestFactory(unittest.TestCase):
         self.assertEqual(bee.name, "Bee")
         self.assertEqual(bee.health, 1)
         self.assertEqual(bee._damage, 1)
-        self.assertEqual(bee.move.__doc__, "randomly until sees a wall or decides to turn")
-        self.assertEqual(bee.attack.__doc__, "attack when in close range near the character")
+        self.assertEqual(bee.move.__doc__,
+                         "randomly until sees a wall or decides to turn")
+        self.assertEqual(bee.attack.__doc__,
+                         "attack when in close range near the character")
 
     def test_scorpion(self):
         scorpion = ScorpionFactory().create()

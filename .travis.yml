@@ -1,0 +1,30 @@
+language: python
+install:
+  pip3 install -r requirements.txt
+python: "3.6"
+jobs:
+  include:
+    - stage: lint
+      name: "lint"
+      script:
+        - python3 -m flake8 *.py
+        - python3 -m pylint --disable=C0111,R0903,R0902,R0205 *.py
+    - stage: test
+      name: "tests"
+      script: PYTHONPATH=. pytest tests
+    - stage: build_wheel
+      name: "Build Wheel"
+      script: python setup.py bdist_wheel
+      deploy:
+        provider: releases
+        skip_cleanup: true
+        api_key: ${GITHUB_TOKEN}
+        file_glob: true
+        file:
+          - "dist/*.whl"
+
+stages:
+    - lint
+    - test
+    - name: build_wheel
+      if: branch = master

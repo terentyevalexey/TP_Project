@@ -1,5 +1,5 @@
 import game
-from characters import MainCharacter
+from characters.characters import MainCharacter
 
 
 def enable_continue():

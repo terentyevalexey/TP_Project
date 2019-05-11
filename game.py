@@ -2,7 +2,7 @@ import random
 import sys
 import pygame
 import factory
-import characters
+from characters import characters
 
 TICK_RATE = 30
 GRAY = (42, 42, 42)

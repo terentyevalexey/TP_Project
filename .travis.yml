@@ -11,7 +11,7 @@ jobs:
         - python3 -m pylint --disable=C0111,R0903,R0902,R0205 *.py --extension-pkg-whitelist=pygame
     - stage: test
       name: "tests"
-      script: PYTHONPATH=. pytest tests
+      script: python3 -m unittest discover tests
     - stage: build_wheel
       name: "Build Wheel"
       script: python3 setup.py bdist_wheel

@@ -9,3 +9,11 @@ __pycache__/
 
 # Main character info
 character.txt
+
+# Cache
+.pytest_cache/
+
+
+# local tests
+test_all.sh
+*.pyc

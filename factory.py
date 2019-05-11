@@ -1,15 +1,15 @@
-from characters import Enemies
-from bee import Bee
-from archer import Archer
-from spider import Spider
-from scorpion import Scorpion
-from zombie import Zombie
+from characters.characters import Enemies
+from characters.bee import Bee
+from characters.archer import Archer
+from characters.spider import Spider
+from characters.scorpion import Scorpion
+from characters.zombie import Zombie
 
 
 class EnemyFactory:
     def create(self, x_cor=0, y_cor=0):  # pylint: disable=no-self-use
         obj = Enemies()
-        obj.race = "Enemy"
+        obj.race = 'Enemy'
         obj.x_cor = x_cor
         obj.y_cor = y_cor
         return obj

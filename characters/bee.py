@@ -1,4 +1,4 @@
-from characters import Enemies
+from characters.characters import Enemies
 
 
 class Bee(Enemies):

@@ -1,4 +1,5 @@
 import pygame
+from collections.abc import Iterable
 from constants import WIDTH, HEIGHT, CALIBRI, Colors
 
 
@@ -23,7 +24,7 @@ class Button:
         elif len(rect) == 4:
             center_x, center_y, width, height = rect
         else:
-            raise TypeError("wrong amount of ")
+            raise TypeError("wrong amount of arguments")
         self.action = action
         self.rectangle = pygame.Rect(center_x - width // 2,  # left
                                      center_y - height // 2,  # top
@@ -70,7 +71,9 @@ class Button:
 
 
 class Buttons:
-    def __init__(self, *buttons: Button):
+    def __init__(self, *buttons):
+        if len(buttons) == 1 and isinstance(buttons[0], Iterable):
+            buttons = buttons[0]
         self._buttons = buttons
         self.cur_state = 0
 
@@ -79,7 +82,7 @@ class Buttons:
             button.draw()
 
     def next(self):
-        if self.cur_state < len(self._buttons):
+        if self.cur_state < len(self._buttons) - 1:
             self.cur_state += 1
 
     def prev(self):
@@ -88,7 +91,7 @@ class Buttons:
 
     def handle_keyboard_push(self):
         if self._buttons:
-            self._buttons[self.cur_state].draw()
+            self._buttons[self.cur_state].push()
 
     def handle_mouse_click(self, *point):
         for button in self._buttons:

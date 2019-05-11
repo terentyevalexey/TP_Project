@@ -2,6 +2,7 @@ import random
 import sys
 import pygame
 import factory
+from handler import EventHandler
 from characters import characters
 from constants import HEIGHT, WIDTH, TICK_RATE, Colors
 
@@ -48,5 +49,23 @@ def game_loop():
         pygame.display.update()
 
 
-def main():
-    game_loop()
+class GameHandler(EventHandler):
+    def __init__(self):
+        """
+        init the world
+        """
+
+    def on_key_down(self, key):
+        """
+        on key down handler
+        """
+
+    def on_mouse_click(self, *point):
+        """
+        on mouse click handler
+        """
+
+    def update(self):
+        """
+        update world handler
+        """

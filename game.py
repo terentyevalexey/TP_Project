@@ -1,9 +1,9 @@
 import random
 import sys
-import factory
 import pygame
+import factory
 from characters import characters
-from constants import *
+from constants import HEIGHT, WIDTH, TICK_RATE, Colors
 
 
 class Room:
@@ -39,7 +39,7 @@ def game_loop():
 
     while True:
         clock.tick(TICK_RATE)
-        screen.fill(GRAY)
+        screen.fill(Colors.GRAY)
         draw_characters(current_room)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

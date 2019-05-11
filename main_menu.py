@@ -1,7 +1,8 @@
-import game
 import pygame
+import game
+from button import Button
 from characters.characters import MainCharacter
-from constants import *
+from constants import WIDTH, HEIGHT, GAME_NAME, Colors
 
 
 def enable_continue():
@@ -10,8 +11,8 @@ def enable_continue():
     :return: True if player exists, so he can continue the game
     """
     try:
-        f = open("character.txt", "x")
-        f.close()
+        file = open("character.txt", "x")
+        file.close()
         return False
     except FileExistsError:
         return True
@@ -38,8 +39,14 @@ def create_window():
     initializing window: this implementation is for pygame
     """
     pygame.init()
+    pygame.display.init()
     pygame.display.set_caption(GAME_NAME)
     pygame.display.set_mode((WIDTH, HEIGHT))
+
+
+def make_buttons():
+    return (Button(new_game, 'Start a game', Colors.GREEN,
+                   (WIDTH // 2, HEIGHT // 2)),)
 
 
 def event_loop():
@@ -53,7 +60,10 @@ def event_loop():
     exit
     """
     create_window()
-    make_buttons()
+    buttons = make_buttons()
+    while True:
+        for button in buttons:
+            button.draw()
 
 
 if __name__ == '__main__':

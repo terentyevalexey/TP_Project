@@ -1,5 +1,5 @@
-import pygame
 from collections.abc import Iterable
+import pygame
 from constants import WIDTH, HEIGHT, CALIBRI, Colors
 
 

@@ -1,6 +1,6 @@
-import pygame
 import sys
 import os
+import pygame
 from game import GameHandler
 from singleton import singleton
 from handler import EventHandler
@@ -153,5 +153,4 @@ class Main:
 
 
 if __name__ == '__main__':
-    loop = Main()
-    loop.event_loop()
+    Main().event_loop()

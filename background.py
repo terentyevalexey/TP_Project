@@ -1,5 +1,5 @@
-import pygame
 import os
+import pygame
 from constants import WIDTH, HEIGHT
 
 

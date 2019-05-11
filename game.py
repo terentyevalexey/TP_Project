@@ -1,15 +1,9 @@
 import random
 import sys
-import pygame
 import factory
+import pygame
 from characters import characters
-
-TICK_RATE = 30
-GRAY = (42, 42, 42)
-CLOCK = pygame.time.Clock()
-WIDTH = 640
-HEIGHT = 480
-GAME_NAME = "Dungeon"
+from constants import *
 
 
 class Room:
@@ -32,21 +26,19 @@ def draw_characters(room: Room):
         pass
 
 
-def main():
+def game_loop():
     character_info = open("character.txt", "r").readlines()
     main_character = characters.MainCharacter()
     for string in character_info:
         key, val = string.strip("\n").split(" ")
         main_character.__dict__[key] = val
 
-    pygame.init()
-    pygame.display.set_caption(GAME_NAME)
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-
     current_room = Room()
+    clock = pygame.time.Clock()
+    screen = pygame.display.get_surface()
 
     while True:
-        CLOCK.tick(TICK_RATE)
+        clock.tick(TICK_RATE)
         screen.fill(GRAY)
         draw_characters(current_room)
         for event in pygame.event.get():
@@ -54,3 +46,7 @@ def main():
                 pygame.quit()
                 sys.exit()
         pygame.display.update()
+
+
+def main():
+    game_loop()

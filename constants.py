@@ -1,0 +1,7 @@
+TICK_RATE = 30
+GRAY = (42, 42, 42)
+WIDTH = 640
+HEIGHT = 480
+BLACK = (0, 0, 0)
+CALIBRI = 'calibri'
+GAME_NAME = "Dungeon"

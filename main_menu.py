@@ -1,16 +1,20 @@
 import game
+import pygame
 from characters.characters import MainCharacter
+from constants import *
 
 
 def enable_continue():
-    pass
-
-
-try:
-    F = open("character.txt", "x")
-    F.close()
-except FileExistsError:
-    enable_continue()
+    """
+    check for character existence, if exists then we enable continue
+    :return: True if player exists, so he can continue the game
+    """
+    try:
+        f = open("character.txt", "x")
+        f.close()
+        return False
+    except FileExistsError:
+        return True
 
 
 def create_character():
@@ -29,14 +33,28 @@ def new_game():
     game.main()
 
 
-new_game()
+def create_window():
+    """
+    initializing window: this implementation is for pygame
+    """
+    pygame.init()
+    pygame.display.set_caption(GAME_NAME)
+    pygame.display.set_mode((WIDTH, HEIGHT))
 
 
 def event_loop():
-    # check for events
-    pass
+    """
+    main menu loop:
+    initializing window,
+    following commands:
+    start new game
+    continue
+    settings
+    exit
+    """
+    create_window()
+    make_buttons()
 
-# start new game
-# continue
-# settings
-# quit
+
+if __name__ == '__main__':
+    event_loop()

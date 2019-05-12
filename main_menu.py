@@ -1,7 +1,7 @@
 import sys
 import os
 import pygame
-from game import GameHandler
+from game import Room
 from singleton import singleton
 from handler import EventHandler
 from button import Button, Buttons
@@ -44,12 +44,16 @@ def new_game():
 
 
 def settings():
-    pass
+    Main().current_handler = SettingsHandler()
 
 
 def exit_app():
     pygame.quit()
     sys.exit()
+
+
+def to_main_menu():
+    Main().current_handler = MainMenuHandler()
 
 
 def create_window():
@@ -62,8 +66,7 @@ def create_window():
     pygame.display.set_mode((WIDTH, HEIGHT))
 
 
-@singleton
-class MainMenu:
+class Menu:
     """
     Menu class that stores buttons, background image and has method draw
     """
@@ -89,28 +92,39 @@ class MainMenu:
         self._buttons.handle_mouse_click(point)
 
 
-def make_buttons():
-    if enable_continue():
-        continue_button = Button(play, 'Continue', Colors.WHITE,
-                                 (WIDTH // 2, HEIGHT // 10 * 2))
-    else:
-        continue_button = Button(None, 'Continue', Colors.GRAY,
-                                 (WIDTH // 2, HEIGHT // 10 * 2))
-    start_button = Button(new_game, 'Start a game', Colors.GREEN,
-                          (WIDTH // 2, HEIGHT // 10 * 4))
-    settings_button = Button(settings, 'Settings', Colors.COOLCOLOR,
-                             (WIDTH // 2, HEIGHT // 10 * 6))
-    exit_button = Button(exit_app, 'Exit', Colors.RED,
-                         (WIDTH // 2, HEIGHT // 10 * 8))
+@singleton
+class MainMenu(Menu):
+    def __init__(self):
+        if enable_continue():
+            continue_button = Button(play, 'Continue', Colors.WHITE,
+                                     (WIDTH // 2, HEIGHT // 10 * 2))
+        else:
+            continue_button = Button(None, 'Continue', Colors.GRAY,
+                                     (WIDTH // 2, HEIGHT // 10 * 2))
+        start_button = Button(new_game, 'Start a game', Colors.GREEN,
+                              (WIDTH // 2, HEIGHT // 10 * 4))
+        settings_button = Button(settings, 'Settings', Colors.COOLCOLOR,
+                                 (WIDTH // 2, HEIGHT // 10 * 6))
+        exit_button = Button(exit_app, 'Exit', Colors.RED,
+                             (WIDTH // 2, HEIGHT // 10 * 8))
+        super().__init__(
+            Buttons(continue_button, start_button, settings_button,
+                    exit_button))
 
-    return Buttons(continue_button, start_button, settings_button, exit_button)
+
+@singleton
+class Settings(Menu):
+    def __init__(self):
+        back_button = Button(to_main_menu, 'Exit', Colors.RED,
+                             (WIDTH // 2, HEIGHT // 10 * 5))
+
+        super().__init__(Buttons(back_button))
 
 
 @singleton
 class MainMenuHandler(EventHandler):
     def __init__(self):
-        buttons = make_buttons()
-        self.menu = MainMenu(buttons)
+        self.menu = MainMenu()
         self.menu.draw()
 
     def on_key_down(self, key):
@@ -128,17 +142,48 @@ class MainMenuHandler(EventHandler):
         self.menu.draw()
 
 
-def check_events(handler):
-    for event in pygame.event.get():
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pressed()[0] == 1:
-                mouse_pt = pygame.mouse.get_pos()
-                handler.on_mouse_click(mouse_pt)
-        elif event.type == pygame.KEYDOWN:
-            handler.on_key_down(event.key)
-        else:
-            continue
-        handler.update()
+@singleton
+class SettingsHandler(EventHandler):
+    def __init__(self):
+        self.menu = Settings()
+        self.menu.draw()
+
+    def on_key_down(self, key):
+        if key == pygame.K_DOWN and pygame.K_s:
+            self.menu.next()
+        elif key == pygame.K_UP and pygame.K_w:
+            self.menu.prev()
+        elif key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_LEFT):
+            self.menu.handle_keyboard_push()
+
+    def on_mouse_click(self, *point):
+        self.menu.handle_mouse_click(*point)
+
+    def update(self):
+        self.menu.draw()
+
+
+class GameHandler(EventHandler):
+    def __init__(self):
+        """
+        init the world
+        """
+        self._room = Room()
+
+    def on_key_down(self, key):
+        """
+        on key down handler
+        """
+
+    def on_mouse_click(self, *point):
+        """
+        on mouse click handler
+        """
+
+    def update(self):
+        """
+        update world handler
+        """
 
 
 @singleton
@@ -149,7 +194,16 @@ class Main:
 
     def event_loop(self):
         while True:
-            check_events(self.current_handler)
+            for event in pygame.event.get():
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if pygame.mouse.get_pressed()[0] == 1:
+                        mouse_pt = pygame.mouse.get_pos()
+                        self.current_handler.on_mouse_click(mouse_pt)
+                elif event.type == pygame.KEYDOWN:
+                    self.current_handler.on_key_down(event.key)
+                else:
+                    continue
+                self.current_handler.update()
 
 
 if __name__ == '__main__':

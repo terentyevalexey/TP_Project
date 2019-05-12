@@ -2,7 +2,6 @@ import random
 import sys
 import pygame
 import factory
-from handler import EventHandler
 from characters import characters
 from constants import HEIGHT, WIDTH, TICK_RATE, Colors
 
@@ -21,10 +20,9 @@ class Room:
         self.bonus = random.randint(1, 10) > 8
         self.doors = random.randint(1, 4)
 
-
-def draw_characters(room: Room):
-    for _ in room.enemies:
-        pass
+    def draw(self):
+        for _ in self.enemies:
+            pass
 
 
 def game_loop():
@@ -41,31 +39,9 @@ def game_loop():
     while True:
         clock.tick(TICK_RATE)
         screen.fill(Colors.GRAY)
-        draw_characters(current_room)
+        current_room.draw()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
         pygame.display.update()
-
-
-class GameHandler(EventHandler):
-    def __init__(self):
-        """
-        init the world
-        """
-
-    def on_key_down(self, key):
-        """
-        on key down handler
-        """
-
-    def on_mouse_click(self, *point):
-        """
-        on mouse click handler
-        """
-
-    def update(self):
-        """
-        update world handler
-        """

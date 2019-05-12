@@ -11,5 +11,9 @@ class EventHandler(ABC):
         pass
 
     @abstractmethod
+    def on_key_pressed(self, key):
+        pass
+
+    @abstractmethod
     def update(self):
         pass

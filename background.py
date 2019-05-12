@@ -4,9 +4,13 @@ from constants import WIDTH, HEIGHT
 
 
 class Background:
-    def __init__(self, name):
-        self._background = pygame.image.load(os.path.join('data',
-                                                          f'{name}.jpg'))
+    def __init__(self, name, png=False):
+        if png:
+            self._background = pygame.image.load(os.path.join('data',
+                                                              f'{name}.png'))
+        else:
+            self._background = pygame.image.load(os.path.join('data',
+                                                              f'{name}.jpg'))
 
     def draw(self):
         screen = pygame.display.get_surface()

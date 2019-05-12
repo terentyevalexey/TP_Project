@@ -5,7 +5,11 @@ from singleton import singleton
 
 class Unit:
     @abstractmethod
-    def move(self):
+    def update(self):
+        pass
+
+    @abstractmethod
+    def draw(self):
         pass
 
 
@@ -34,12 +38,12 @@ class MainCharacter(Unit):
         self.leftward = False
         self.upward = False
 
-    def attack(self, enemies):
+    def attack(self):
         # weapon fists/sword then we check for enemies in front
         # weapon magic/bow then we make a projectile
         pass
 
-    def move(self):
+    def update(self):
         diag_diff = round(self.move_speed - ((self.move_speed ** 2) / 2) ** .5)
         if not (self.downward and self.upward):
             if self.upward:
@@ -60,6 +64,9 @@ class MainCharacter(Unit):
                 if self.upward | self.downward:
                     self.x_cor += diag_diff
 
+    def draw(self):
+        pass
+
 
 class Enemies(Unit):
     """
@@ -67,9 +74,13 @@ class Enemies(Unit):
     """
 
     @abstractmethod
-    def move(self):
+    def update(self):
         pass
 
     @abstractmethod
     def attack(self):
+        pass
+
+    @abstractmethod
+    def draw(self):
         pass

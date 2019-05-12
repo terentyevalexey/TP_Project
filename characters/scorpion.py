@@ -2,7 +2,7 @@ from characters.characters import Enemies
 
 
 class Scorpion(Enemies):
-    def move(self):
+    def update(self):
         """moves to the character"""
 
     def attack(self):

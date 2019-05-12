@@ -108,6 +108,3 @@ class Maze:
                 self.remove_wall(cur_v, next_v)
                 visited.add(next_v)
                 stack.append(next_v)
-
-
-print(Maze())

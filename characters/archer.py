@@ -2,7 +2,7 @@ from characters.characters import Enemies
 
 
 class Archer(Enemies):
-    def move(self):
+    def update(self):
         """no move"""
 
     def attack(self):

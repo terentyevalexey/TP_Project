@@ -53,7 +53,7 @@ class Doors:
         self._doors = []
         for i in range(4):
             if directions[i]:
-                self._doors.append(Door(i))
+                self._doors.append(Door(Directions(i)))
 
     def draw(self):
         for door in self._doors:
@@ -82,14 +82,15 @@ class Room:
         there is chance to be a bonus room
         :param directions: 4 bool tuple for doors existence
         """
-        self.background = Background('BackgroundRoom')
+        # self.background = Background('BackgroundRoom')
+        self.background = Background('BackgroundMainMenu')
         self.enemies = EnemyArmy()
         self.bonus = random.randint(1, 10) > 8
-        self.doors = Doors(Directions(directions))
+        self.doors = Doors(directions)
 
     def draw(self):
         """
-        draw background(floor and walls texture), doors, enemies, player
+        draw background(floor and walls texture), doors, enemies
         """
         self.background.draw()
         self.doors.draw()
@@ -104,14 +105,10 @@ class World:
         dungeon is the Matrix of Rooms
         """
         # creating character from the save file
-        with open("character.txt", "r").readlines() as character_info:
-            self.main_character = characters.MainCharacter()
-            for string in character_info:
-                key, val = string.strip("\n").split(" ")
-                self.main_character.__dict__[key] = val
+        self.main_character = characters.MainCharacter()
         # creating a maze of rooms
         width = height = 10  # number of rooms in row / column
-        min_dist = width // 2  # min manhattan distance between begin and end
+        min_dist = width // 2 - 2  # min manhattan distance between begin 7 end
         begin = (random.randint(0, width - 1), random.randint(0, height - 1))
         possible_ends = []
         for i in range(height):

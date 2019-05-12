@@ -11,7 +11,7 @@ class EventHandler(ABC):
         pass
 
     @abstractmethod
-    def on_key_pressed(self, key):
+    def on_key_pressed(self, keys):
         pass
 
     @abstractmethod

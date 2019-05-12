@@ -24,14 +24,9 @@ def enable_continue():
 
 
 def create_character():
-    # insert a name
+    # insert a name, not working, no saves.
     name = "OLEG"
-    main_character = MainCharacter(name)
-    character_info = open("character.txt", "w")
-    for attr_name in main_character.__dict__:
-        character_info.write(
-            attr_name + " " + str(main_character.__dict__[attr_name]) + "\n")
-    character_info.close()
+    MainCharacter(name)
 
 
 def play():
@@ -128,14 +123,14 @@ class MainMenuHandler(EventHandler):
         self.menu.draw()
 
     def on_key_down(self, key):
-        if key == pygame.K_DOWN and pygame.K_s:
+        if key in (pygame.K_DOWN, pygame.K_s):
             self.menu.next()
-        elif key == pygame.K_UP and pygame.K_w:
+        elif key in (pygame.K_UP, pygame.K_w):
             self.menu.prev()
-        elif key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_LEFT):
+        elif key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_RIGHT):
             self.menu.handle_keyboard_push()
 
-    def on_key_pressed(self, key):
+    def on_key_pressed(self, keys):
         pass
 
     def on_mouse_click(self, *point):
@@ -152,14 +147,14 @@ class SettingsHandler(EventHandler):
         self.menu.draw()
 
     def on_key_down(self, key):
-        if key == pygame.K_DOWN and pygame.K_s:
+        if key in (pygame.K_DOWN, pygame.K_s):
             self.menu.next()
-        elif key == pygame.K_UP and pygame.K_w:
+        elif key in (pygame.K_UP, pygame.K_w):
             self.menu.prev()
-        elif key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_LEFT):
+        elif key in (pygame.K_KP_ENTER, pygame.K_RETURN, pygame.K_RIGHT):
             self.menu.handle_keyboard_push()
 
-    def on_key_pressed(self, key):
+    def on_key_pressed(self, keys):
         pass
 
     def on_mouse_click(self, *point):
@@ -176,14 +171,25 @@ class GameHandler(EventHandler):
         init the world
         """
         self.world = World()
+        self.world.draw()
 
     def on_key_down(self, key):
         """
         on key down handler
         """
 
-    def on_key_pressed(self, key):
-        pass
+    def on_key_pressed(self, keys):
+        self.world.main_character.downward = keys[pygame.K_DOWN] or keys[
+            pygame.K_s]
+        self.world.main_character.upward = keys[pygame.K_UP] or keys[
+            pygame.K_w]
+        self.world.main_character.rightward = keys[pygame.K_RIGHT] or keys[
+            pygame.K_d]
+        self.world.main_character.leftward = keys[pygame.K_LEFT] or keys[
+            pygame.K_a]
+        return keys[pygame.K_DOWN] or keys[pygame.K_s] or keys[
+            pygame.K_UP] or keys[pygame.K_w] or keys[pygame.K_RIGHT] or keys[
+                pygame.K_d] or keys[pygame.K_LEFT] or keys[pygame.K_a]
 
     def on_mouse_click(self, *point):
         """
@@ -194,6 +200,8 @@ class GameHandler(EventHandler):
         """
         update world handler
         """
+        self.world.main_character.update()
+        self.world.draw()
 
 
 @singleton
@@ -213,6 +221,9 @@ class Main:
                     self.current_handler.on_key_down(event.key)
                 else:
                     continue
+                self.current_handler.update()
+            keys = pygame.key.get_pressed()
+            if self.current_handler.on_key_pressed(keys):
                 self.current_handler.update()
 
 

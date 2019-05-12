@@ -1,6 +1,8 @@
 from abc import abstractmethod
 from enum import Enum
+import pygame
 from singleton import singleton
+from constants import WIDTH, HEIGHT, Colors
 
 
 class Unit:
@@ -31,8 +33,10 @@ class MainCharacter(Unit):
         self.move_speed = 10
         self.armor = 0
         self.weapon = Weapons.FISTS
-        self.x_cor = 0
-        self.y_cor = 0
+        self.width = WIDTH // 20
+        self.height = HEIGHT // 20
+        self.x_cor = (WIDTH - self.width) // 2
+        self.y_cor = (HEIGHT - self.height) // 2
         self.rightward = False
         self.downward = False
         self.leftward = False
@@ -44,28 +48,33 @@ class MainCharacter(Unit):
         pass
 
     def update(self):
+
         diag_diff = round(self.move_speed - ((self.move_speed ** 2) / 2) ** .5)
         if not (self.downward and self.upward):
             if self.upward:
-                self.y_cor += self.move_speed
-                if self.rightward | self.leftward:
-                    self.y_cor -= diag_diff
-            if self.downward:
                 self.y_cor -= self.move_speed
-                if self.rightward | self.leftward:
+                if self.rightward or self.leftward:
                     self.y_cor += diag_diff
+            if self.downward:
+                self.y_cor += self.move_speed
+                if self.rightward or self.leftward:
+                    self.y_cor -= diag_diff
         if not (self.rightward and self.leftward):
             if self.rightward:
                 self.x_cor += self.move_speed
-                if self.upward | self.downward:
+                if self.upward or self.downward:
                     self.x_cor -= diag_diff
             if self.leftward:
                 self.x_cor -= self.move_speed
-                if self.upward | self.downward:
+                if self.upward or self.downward:
                     self.x_cor += diag_diff
 
     def draw(self):
-        pass
+        rectangle = (int(self.x_cor), int(self.y_cor),
+                     int(self.width), int(self.height))
+        screen = pygame.display.get_surface()
+        pygame.draw.rect(screen, Colors.RED, rectangle)
+        pygame.display.update()
 
 
 class Enemies(Unit):

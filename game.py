@@ -1,5 +1,4 @@
 import random
-import sys
 from enum import Enum
 import pygame
 import factory
@@ -7,7 +6,7 @@ from background import Background
 from maze_generator import Maze
 from singleton import singleton
 from characters import characters
-from constants import HEIGHT, WIDTH, TICK_RATE, Colors
+from constants import HEIGHT, WIDTH, Colors
 
 
 class Directions(Enum):
@@ -35,13 +34,12 @@ class Door:
             self.rectangle = (WIDTH // 5 * 2, HEIGHT - HEIGHT // 10,
                               WIDTH // 5, HEIGHT // 10)
 
-    def has(self, *point):
-        return pygame.Rect(self.rectangle).collidepoint(*point)
+    def has(self, *rect):
+        return pygame.Rect(self.rectangle).colliderect(rect)
 
     def draw(self):
         screen = pygame.display.get_surface()
         pygame.draw.rect(screen, Colors.GREEN, self.rectangle)
-        pygame.display.update()
 
 
 class Doors:
@@ -59,6 +57,12 @@ class Doors:
         for door in self._doors:
             door.draw()
 
+    def in_door(self, *rect):
+        for door in self._doors:
+            if door.has(*rect):
+                return door.side
+        return None
+
 
 class EnemyArmy:
     def __init__(self):
@@ -73,6 +77,16 @@ class EnemyArmy:
     def draw(self):
         for enemy in self.enemies:
             enemy.draw()
+
+    def update(self, goto_x_cor, goto_y_cor, goto_width, goto_height):
+        for enemy in self.enemies:
+            enemy.downward = goto_y_cor + goto_height >= \
+                             enemy.y_cor + enemy.height
+            enemy.upward = goto_y_cor <= enemy.y_cor
+            enemy.leftward = goto_x_cor <= enemy.x_cor
+            enemy.rightward = goto_x_cor + goto_width >= \
+                enemy.x_cor + enemy.width
+            enemy.update()
 
 
 class Room:
@@ -96,6 +110,10 @@ class Room:
         self.doors.draw()
         self.enemies.draw()
 
+    def update(self, *rect):
+        self.enemies.update(*rect)
+        return self.doors.in_door(*rect)
+
 
 @singleton
 class World:
@@ -113,14 +131,14 @@ class World:
         possible_ends = []
         for i in range(height):
             for j in range(width):
-                if begin[0] - i + begin[1] - j > min_dist:
+                if abs(begin[0] - i) + abs(begin[1] - j) > min_dist:
                     possible_ends.append((i, j))
         end = random.choice(possible_ends)
         maze = Maze(width, height, begin, end)
         self.dungeon = [
             [Room(maze.accessible_sides((i, j))) for i in range(height)]
             for j in range(width)]
-        self.current_room = begin  # coordinates of current room
+        self.cur_room_xy = begin  # coordinates of current room
 
     def draw(self):
         """
@@ -128,21 +146,27 @@ class World:
         draw current room with enemies
         draw main character
         """
-        self.dungeon[self.current_room[0]][self.current_room[1]].draw()
+        self.dungeon[self.cur_room_xy[0]][self.cur_room_xy[1]].draw()
         self.main_character.draw()
-
-
-def game_loop():
-    # seems useless, will be replaced for a GameHandler
-    clock = pygame.time.Clock()
-    screen = pygame.display.get_surface()
-    world = World()
-    while True:
-        clock.tick(TICK_RATE)
-        screen.fill(Colors.GRAY)
-        world.draw()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
         pygame.display.update()
+
+    def update(self):
+        self.main_character.update()
+        cur_room = self.dungeon[self.cur_room_xy[0]][self.cur_room_xy[1]]
+        in_door = cur_room.update(self.main_character.x_cor,
+                                  self.main_character.y_cor,
+                                  self.main_character.width,
+                                  self.main_character.height)
+        player = self.main_character
+        if in_door == Directions.LEFT:
+            self.cur_room_xy = (self.cur_room_xy[0], self.cur_room_xy[1] - 1)
+            self.main_character.x_cor = WIDTH - player.x_cor - player.width
+        elif in_door == Directions.RIGHT:
+            self.cur_room_xy = (self.cur_room_xy[0], self.cur_room_xy[1] + 1)
+            self.main_character.x_cor = WIDTH - player.x_cor + player.width
+        elif in_door == Directions.TOP:
+            self.cur_room_xy = (self.cur_room_xy[0] - 1, self.cur_room_xy[1])
+            self.main_character.y_cor = HEIGHT - player.y_cor - player.height
+        elif in_door == Directions.DOWN:
+            self.cur_room_xy = (self.cur_room_xy[0] + 1, self.cur_room_xy[1])
+            self.main_character.y_cor = HEIGHT - player.y_cor + player.height

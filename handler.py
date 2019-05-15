@@ -15,5 +15,5 @@ class EventHandler(ABC):
         pass
 
     @abstractmethod
-    def update(self):
+    def update(self, changed):
         pass

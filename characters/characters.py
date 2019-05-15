@@ -48,7 +48,6 @@ class MainCharacter(Unit):
         pass
 
     def update(self):
-
         diag_diff = round(self.move_speed - ((self.move_speed ** 2) / 2) ** .5)
         if not (self.downward and self.upward):
             if self.upward:
@@ -74,13 +73,22 @@ class MainCharacter(Unit):
                      int(self.width), int(self.height))
         screen = pygame.display.get_surface()
         pygame.draw.rect(screen, Colors.RED, rectangle)
-        pygame.display.update()
 
 
 class Enemies(Unit):
     """
     Enemies are created using factory method, because we want to expand types
     """
+    def __init__(self):
+        self.move_speed = 5
+        self.rightward = False
+        self.downward = False
+        self.leftward = False
+        self.upward = False
+        self.x_cor = 0
+        self.y_cor = 0
+        self.height = HEIGHT // 20
+        self.width = WIDTH // 20
 
     @abstractmethod
     def update(self):
@@ -90,6 +98,11 @@ class Enemies(Unit):
     def attack(self):
         pass
 
-    @abstractmethod
     def draw(self):
-        pass
+        """
+        should be an abstract method
+        """
+        rectangle = (int(self.x_cor), int(self.y_cor),
+                     int(self.width), int(self.height))
+        screen = pygame.display.get_surface()
+        pygame.draw.rect(screen, Colors.COOLCOLOR, rectangle)

@@ -16,4 +16,3 @@ class Background:
         screen = pygame.display.get_surface()
         screen.blit(pygame.transform.scale(self._background, (WIDTH, HEIGHT)),
                     (0, 0))
-        pygame.display.update()

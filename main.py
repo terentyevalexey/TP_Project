@@ -7,7 +7,7 @@ from handler import EventHandler
 from button import Button, Buttons
 from background import Background
 from characters.characters import MainCharacter
-from constants import WIDTH, HEIGHT, GAME_NAME, Colors
+from constants import WIDTH, HEIGHT, GAME_NAME, TICK_RATE, Colors
 
 
 def enable_continue():
@@ -136,8 +136,9 @@ class MainMenuHandler(EventHandler):
     def on_mouse_click(self, *point):
         self.menu.handle_mouse_click(*point)
 
-    def update(self):
-        self.menu.draw()
+    def update(self, changed):
+        if changed:
+            self.menu.draw()
 
 
 @singleton
@@ -160,8 +161,9 @@ class SettingsHandler(EventHandler):
     def on_mouse_click(self, *point):
         self.menu.handle_mouse_click(*point)
 
-    def update(self):
-        self.menu.draw()
+    def update(self, changed):
+        if changed:
+            self.menu.draw()
 
 
 @singleton
@@ -196,11 +198,11 @@ class GameHandler(EventHandler):
         on mouse click handler
         """
 
-    def update(self):
+    def update(self, changed):
         """
         update world handler
         """
-        self.world.main_character.update()
+        self.world.update()
         self.world.draw()
 
 
@@ -209,9 +211,12 @@ class Main:
     def __init__(self):
         create_window()
         self.current_handler = MainMenuHandler()
+        self.clock = pygame.time.Clock()
 
     def event_loop(self):
         while True:
+            changed = False
+            self.clock.tick(TICK_RATE)
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if pygame.mouse.get_pressed()[0] == 1:
@@ -221,10 +226,10 @@ class Main:
                     self.current_handler.on_key_down(event.key)
                 else:
                     continue
-                self.current_handler.update()
+                changed = True
             keys = pygame.key.get_pressed()
-            if self.current_handler.on_key_pressed(keys):
-                self.current_handler.update()
+            self.current_handler.on_key_pressed(keys)
+            self.current_handler.update(changed)
 
 
 if __name__ == '__main__':

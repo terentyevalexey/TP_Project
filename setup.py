@@ -10,7 +10,7 @@ def parse_requirements():
 
 setup(
     name=ROOT_PACKAGE_NAME,
-    version='1.0',
+    version='1.01',
     author=['Terentyev Alexey'],
     packages=find_packages(),
     long_description='Dungeon game for TP',

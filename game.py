@@ -2,7 +2,7 @@ import random
 from enum import Enum
 import pygame
 import factory
-from background import Background
+from image import Image
 from maze_generator import Maze
 from singleton import singleton
 from characters import characters
@@ -96,8 +96,8 @@ class Room:
         there is chance to be a bonus room
         :param directions: 4 bool tuple for doors existence
         """
-        # self.background = Background('BackgroundRoom')
-        self.background = Background('BackgroundMainMenu')
+        # self.background = Image('BackgroundRoom')
+        self.background = Image('BackgroundMainMenu')
         self.enemies = EnemyArmy()
         self.bonus = random.randint(1, 10) > 8
         self.doors = Doors(directions)

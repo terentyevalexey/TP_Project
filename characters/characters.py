@@ -1,4 +1,4 @@
-from abc import abstractmethod
+from abc import abstractmethod, ABC
 from enum import Enum
 import pygame
 from singleton import singleton
@@ -79,6 +79,7 @@ class Enemies(Unit):
     """
     Enemies are created using factory method, because we want to expand types
     """
+
     def __init__(self):
         self.move_speed = 5
         self.rightward = False

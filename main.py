@@ -5,9 +5,10 @@ from game import World
 from singleton import singleton
 from handler import EventHandler
 from button import Button, Buttons
-from background import Background
+from image import Image
 from characters.characters import MainCharacter
 from constants import WIDTH, HEIGHT, GAME_NAME, TICK_RATE, Colors
+from logger_decorator import log_usage
 
 
 def enable_continue():
@@ -29,10 +30,14 @@ def create_character():
     MainCharacter(name)
 
 
+# to check how often do players start a game
+@log_usage
 def play():
     Main().current_handler = GameHandler()
 
 
+# to check how often do players create a new character
+@log_usage
 def new_game():
     create_character()
     play()
@@ -67,7 +72,7 @@ class Menu:
     """
 
     def __init__(self, buttons: Buttons):
-        self._background = Background('BackgroundMainMenu')
+        self._background = Image('BackgroundMainMenu')
         self._buttons = buttons
 
     def draw(self):

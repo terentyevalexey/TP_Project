@@ -20,3 +20,6 @@ test_all.sh
 
 # to send binary files manually
 data/
+
+# logs
+logs/

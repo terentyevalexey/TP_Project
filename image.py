@@ -16,4 +16,3 @@ class Image:
         screen = pygame.display.get_surface()
         screen.blit(pygame.transform.scale(self._image, (WIDTH, HEIGHT)),
                     (0, 0))
-        pygame.display.update()

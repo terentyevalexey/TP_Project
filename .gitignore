@@ -17,3 +17,9 @@ character.txt
 # local tests
 test_all.sh
 *.pyc
+
+# to send binary files manually
+data/
+
+# logs
+logs/
